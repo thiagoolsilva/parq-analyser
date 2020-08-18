@@ -24,8 +24,9 @@ def config_args_parse(version):
 
     Current supported arguments
      -P --path   the path of parquet file
-     -H --head   The numbers of the first rows to be returned. The default is 5 and the maximum accepted is 39
-
+     -H --head   The numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 39 and this
+        is the default operation selected by program if no one is provided.
+        -T --tail   The numbers of the last rows to be returned. The default value is 5 and the maximum accepted is 39
     Returns:
         [ArgumentParser]: Argument parse instance
     """
@@ -51,18 +52,45 @@ def config_args_parse(version):
                         required=False,
                         choices=range(1, 40),
                         action='store',
-                        help='The numbers of the first rows to be returned. The default is 5 and the maximum accepted is 39')
+                        help='the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 39 and this is the default operation selected by program if no one is provided.')
+    parser.add_argument('-T',
+                        metavar='--tail',
+                        type=int,
+                        required=False,
+                        choices=range(1, 40),
+                        action='store',
+                        help='the numbers of the last rows to be returned. The default value is 5 and the maximum accepted is 39')
+    parser.add_argument('-C',
+                        help='Get total rows',
+                        action='store_true')
+    parser.add_argument('-verbose',
+                        help='enable verbose mode',
+                        action='store_true')
     parser.add_argument('-v',
                         action='version',
-                        help='Shows the app version')
+                        help='shows the app version')
 
     # parse received arguments
     args = parser.parse_args()
 
     parquet_file_path = args.P
+
     # check if the provided path exists
-    if not os.path.exists(parquet_file_path):
+    if not is_valid_file(parquet_file_path):
         raise FileNotFoundError('the provided file ' +
                                 parquet_file_path + ' does not exists')
 
     return args
+
+
+def is_valid_file(path):
+    """
+    Check if provided path exists
+
+    Args:
+        path (string): Path of file
+
+    Returns:
+        [Bool]: True if the file exists
+    """
+    return os.path.exists(path)

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+import logging
 import argparse
 import args_parse
 import parquet_core
@@ -25,9 +26,23 @@ def main():
     """
 
     args = args_parse.config_args_parse('01.00.00')
-    print(vars(args))
 
-    parquet_core.parse_parquet_file(args.P)
+    # check if verbose mode need to be activated
+    should_activate_verbose_mode(args.verbose)
 
+    logging.debug(vars(args))
+
+    parquet_core.parse_parquet_file(args.P, header=args.H, tail=args.T, total_dataframe_size=args.C)
+
+def should_activate_verbose_mode(verbose_mode):
+    """
+    Check if verbose mode must be activated
+
+    Args:
+        verbose_mode (Bool): True if need to activate verbose mode
+    """
+
+    if verbose_mode:
+        logging.basicConfig(level=logging.DEBUG)
 
 main()

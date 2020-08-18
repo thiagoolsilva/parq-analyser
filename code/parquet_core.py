@@ -14,87 +14,130 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-
 from tabulate import tabulate
-from pprint import pprint
 import pandas as pd
-import math
 import logging
 
 MAX_ROWS_TO_PRINT = 5
 
 
-def parse_parquet_file(parquet_path, **kwargs):
+def parse_parquet_file(dataframe, **kwargs):
     """
     Parse the parquet content file
 
     Args:
-        parquet_path (string): parquet path file
+        dataframe (pandas.Dataframe): dataframe
+        kwargs (Any) Args
     """
 
+    # check if the provided dataframe is valid
+    validate_required_fields(dataframe)
+
+    # log all arguments provided by client
     logging.debug(kwargs)
 
     # get all provided args
     arg_header_count = kwargs["header"]
     arg_tail_count = kwargs["tail"]
     args_total_dataframe_count = kwargs["total_dataframe_size"]
+    args_drop_count = kwargs["drop_rows"]
 
-    # load parquet file
-    dataframe = pd.read_parquet(parquet_path)
+    if args_drop_count:
+        execute_drop_strategy(dataframe, args_drop_count)
 
     if args_total_dataframe_count:
-        logging.debug('>>>>>>>>> Using total count strategy <<<<<<<<<<<<')
-
-        total_rows = len(dataframe.index)
-
-        print("Total Rows:", total_rows)
-
+        execute_total_dataframe_count(dataframe)
     elif arg_tail_count:
-        logging.debug('>>>>>>>>> Using tail strategy <<<<<<<<<<<<')
-
-        selected_tail_rows = MAX_ROWS_TO_PRINT if arg_tail_count == None else arg_tail_count
-
-        filtered_dataframe = get_dataframe_tail(dataframe, selected_tail_rows)
-
-        print_dataframe_content(filtered_dataframe)
+        execute_tail_strategy(dataframe, arg_tail_count)
     else:
-        logging.debug('>>>>>>>>> Using header strategy <<<<<<<<<<<<')
-
-        selected_header_rows = MAX_ROWS_TO_PRINT if arg_header_count == None else arg_header_count
-
-        filtered_dataframe = get_dataframe_header(
-            dataframe, selected_header_rows)
-
-        print_dataframe_content(filtered_dataframe)
+        execute_header_strategy(dataframe, arg_header_count)
 
 
-def get_dataframe_tail(dataframe, selected_rows):
+def execute_total_dataframe_count(dataframe):
     """
-    Get the tail rows of dataframe
+    Get total dataframe size
 
     Args:
         dataframe (pandas.Dataframe): Dataframe
-        selected_rows (int): number of rows
-
-    Returns:
-        pandas.Dataframe: Filtered dataframe
     """
-    return dataframe.tail(selected_rows)
+
+    logging.debug('>>>>>>>>> Using total count strategy <<<<<<<<<<<<')
+
+    total_rows = len(dataframe.index)
+
+    print("Total Rows:", total_rows)
 
 
-def get_dataframe_header(dataframe, selected_rows):
+def execute_tail_strategy(dataframe, arg_tail_count):
     """
-    Get the first rows from provided dataframe
+    Execute Tail strategy
+
+    Args:
+        dataframe (pandas.Dataframe): Dataframe
+        arg_tail_count (int): number of rows to be returned
+    """
+
+    logging.debug('>>>>>>>>> Using tail strategy <<<<<<<<<<<<')
+
+    selected_tail_rows = MAX_ROWS_TO_PRINT if arg_tail_count == None else arg_tail_count
+
+    filtered_dataframe = dataframe.tail(selected_tail_rows)
+
+    print_dataframe_content(filtered_dataframe)
+
+
+def execute_header_strategy(dataframe, arg_header_count):
+    """
+    Execute Header strategy
 
     Args:
         dataframe [pandas.Dataframe]: dataframe
-        selected_rows [int]: number of rows to be returned
+        arg_header_count [int]: number of rows to be returned
 
-    Returns:
-        [pandas.Dataframe]: filtered dataframe
     """
 
-    return dataframe.head(selected_rows)
+    logging.debug('>>>>>>>>> Using header strategy <<<<<<<<<<<<')
+
+    selected_header_rows = MAX_ROWS_TO_PRINT if arg_header_count == None else arg_header_count
+
+    filtered_dataframe = dataframe.head(selected_header_rows)
+
+    print_dataframe_content(filtered_dataframe)
+
+
+def execute_drop_strategy(dataframe, arg_drop_count):
+    """
+
+    Drop the first elements of dataframe
+
+    Args:
+        dataframe (pandas.Dataframe): Dataframe
+        arg_drop_count (int): rows to be dropped
+    """
+
+    logging.debug('>>>>>>>>> Using drop rows strategy <<<<<<<<<<<<')
+
+    selected_drop_rows = MAX_ROWS_TO_PRINT if arg_drop_count == None else arg_drop_count
+
+    if selected_drop_rows == 1:
+        dataframe = dataframe.drop(dataframe.index[0])
+    else:
+        dataframe.drop(dataframe.index[0:selected_drop_rows], inplace=True)
+
+
+def validate_required_fields(dataframe):
+    """
+    Check if was provided a valid Dataframe
+
+    Args:
+        dataframe (pandas.Dataframe): Dataframe instance
+
+    Raises:
+        ValueError: If the Dataframe is not valid
+    """
+
+    if dataframe.empty:
+        raise ValueError("It was not provided a valid Dataframe.")
 
 
 def print_dataframe_content(dataframe):

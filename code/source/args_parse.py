@@ -56,23 +56,23 @@ def config_args_parse(version):
                         metavar='--head',
                         type=int,
                         required=False,
-                        choices=range(1, 40),
+                        choices=range(1, 200),
                         action='store',
-                        help='the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 39 and this is the default operation selected by program if no one is provided.')
+                        help='the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 199 and this is the default operation selected by program if no one is provided.')
     parser.add_argument('-T',
                         metavar='--tail',
                         type=int,
                         required=False,
-                        choices=range(1, 40),
+                        choices=range(1, 200),
                         action='store',
-                        help='the numbers of the last rows to be returned. The maximum number accepted is 39')
+                        help='the numbers of the last rows to be returned. The maximum number accepted is 199')
     parser.add_argument('-D',
                         metavar='--drop',
                         type=int,
                         required=False,
-                        choices=range(1, 101),
+                        choices=range(1, 200),
                         action='store',
-                        help='the numbers of the first rows to be dropped. The maximum number accepted is 100')
+                        help='the numbers of the first rows to be dropped. The maximum number accepted is 199')
     parser.add_argument('-C',
                         help='Get total rows',
                         action='store_true')

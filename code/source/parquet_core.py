@@ -19,6 +19,7 @@ import pandas as pd
 import logging
 
 MAX_ROWS_TO_PRINT = 5
+DEFAULT_SELECTED_ROWS = 5
 
 
 def parse_parquet_file(dataframe, **kwargs):
@@ -79,7 +80,7 @@ def execute_tail_strategy(dataframe, arg_tail_count):
 
     logging.debug('>>>>>>>>> Using tail strategy <<<<<<<<<<<<')
 
-    selected_tail_rows = MAX_ROWS_TO_PRINT if arg_tail_count == None else arg_tail_count
+    selected_tail_rows = DEFAULT_SELECTED_ROWS if arg_tail_count == None else arg_tail_count
 
     filtered_dataframe = dataframe.tail(selected_tail_rows)
 
@@ -98,7 +99,7 @@ def execute_header_strategy(dataframe, arg_header_count):
 
     logging.debug('>>>>>>>>> Using header strategy <<<<<<<<<<<<')
 
-    selected_header_rows = MAX_ROWS_TO_PRINT if arg_header_count == None else arg_header_count
+    selected_header_rows = DEFAULT_SELECTED_ROWS if arg_header_count == None else arg_header_count
 
     filtered_dataframe = dataframe.head(selected_header_rows)
 
@@ -117,10 +118,10 @@ def execute_drop_strategy(dataframe, arg_drop_count):
 
     logging.debug('>>>>>>>>> Using drop rows strategy <<<<<<<<<<<<')
 
-    selected_drop_rows = MAX_ROWS_TO_PRINT if arg_drop_count == None else arg_drop_count
+    selected_drop_rows = DEFAULT_SELECTED_ROWS if arg_drop_count == None else arg_drop_count
 
     if selected_drop_rows == 1:
-        dataframe = dataframe.drop(dataframe.index[0])
+        dataframe = dataframe.drop(dataframe.index[0], inplace=True)
     else:
         dataframe.drop(dataframe.index[0:selected_drop_rows], inplace=True)
 

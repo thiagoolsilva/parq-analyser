@@ -8,8 +8,9 @@
             "name": "Run program",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
-            "console": "integratedTerminal"
+            "program": "source/main.py",
+            "console": "integratedTerminal",
+            "args": ["-P", "/home/thiago/Downloads/token.parquet"]
         }
     ]
 }

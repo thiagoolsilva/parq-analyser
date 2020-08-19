@@ -15,12 +15,11 @@ limitations under the License.
 """
 
 import unittest
-import pandas as pd
 from tests.dataframe_factory import create_dataframe
 from source.parquet_core import execute_drop_strategy
 
 
-class TestParquetCore(unittest.TestCase):
+class TestParquetDropFunc(unittest.TestCase):
 
     def test_when_args_equals_to_one_is_expected_to_remove_one_element(self):
         dataframe = create_dataframe(3)
@@ -58,7 +57,7 @@ class TestParquetCore(unittest.TestCase):
 
         self.assertEqual(0, len(dataframe.index))
 
-    def test_when_args_equals_one_len_is_expected_to_remove_first_element(self):
+    def test_when_args_equals_one_is_expected_to_remove_first_element(self):
         dataframe = create_dataframe(3)
         execute_drop_strategy(dataframe, 1)
 

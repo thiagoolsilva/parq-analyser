@@ -43,30 +43,42 @@ def parse_parquet_file(dataframe, **kwargs):
     args_total_dataframe_count = kwargs["total_dataframe_size"]
     args_drop_count = kwargs["drop_rows"]
 
+    filtered_dataframe = None
+    total_count_dataframe = None
+
     if args_drop_count:
         execute_drop_strategy(dataframe, args_drop_count)
 
     if args_total_dataframe_count:
-        execute_total_dataframe_count(dataframe)
+        total_count_dataframe = execute_total_dataframe_count_strategy(dataframe)
     elif arg_tail_count:
-        execute_tail_strategy(dataframe, arg_tail_count)
+        filtered_dataframe = execute_tail_strategy(dataframe, arg_tail_count)
     else:
-        execute_header_strategy(dataframe, arg_header_count)
+        filtered_dataframe = execute_header_strategy(
+            dataframe, arg_header_count)
+
+    if filtered_dataframe is not None:
+        print_dataframe_content(filtered_dataframe)
+    else:
+        print("Total Rows:", total_count_dataframe)
 
 
-def execute_total_dataframe_count(dataframe):
+def execute_total_dataframe_count_strategy(dataframe):
     """
     Get total dataframe size
 
     Args:
         dataframe (pandas.Dataframe): Dataframe
+
+    Returns:
+        [int]: number of rows
     """
 
     logging.debug('>>>>>>>>> Using total count strategy <<<<<<<<<<<<')
 
     total_rows = len(dataframe.index)
 
-    print("Total Rows:", total_rows)
+    return total_rows
 
 
 def execute_tail_strategy(dataframe, arg_tail_count):
@@ -76,6 +88,9 @@ def execute_tail_strategy(dataframe, arg_tail_count):
     Args:
         dataframe (pandas.Dataframe): Dataframe
         arg_tail_count (int): number of rows to be returned
+
+    Returns:
+        [pandas.Dataframe]: Filtered Dataframe
     """
 
     logging.debug('>>>>>>>>> Using tail strategy <<<<<<<<<<<<')
@@ -84,7 +99,7 @@ def execute_tail_strategy(dataframe, arg_tail_count):
 
     filtered_dataframe = dataframe.tail(selected_tail_rows)
 
-    print_dataframe_content(filtered_dataframe)
+    return filtered_dataframe
 
 
 def execute_header_strategy(dataframe, arg_header_count):
@@ -95,6 +110,8 @@ def execute_header_strategy(dataframe, arg_header_count):
         dataframe [pandas.Dataframe]: dataframe
         arg_header_count [int]: number of rows to be returned
 
+    Returns:
+        [pandas.Dataframe]: Filtered Dataframe
     """
 
     logging.debug('>>>>>>>>> Using header strategy <<<<<<<<<<<<')
@@ -103,7 +120,7 @@ def execute_header_strategy(dataframe, arg_header_count):
 
     filtered_dataframe = dataframe.head(selected_header_rows)
 
-    print_dataframe_content(filtered_dataframe)
+    return filtered_dataframe
 
 
 def execute_drop_strategy(dataframe, arg_drop_count):
@@ -137,7 +154,7 @@ def validate_required_fields(dataframe):
         ValueError: If the Dataframe is not valid
     """
 
-    if dataframe.empty:
+    if dataframe is None:
         raise ValueError("It was not provided a valid Dataframe.")
 
 

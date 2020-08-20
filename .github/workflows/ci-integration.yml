@@ -25,8 +25,8 @@ jobs:
         with:
           fetch-depth: 0
          
-      - name: checkout to current branch
-        run: git checkout $(echo $head_ref | sed -E 's|refs/[a-zA-Z]+/||')  
+      - name: Switch to Current Branch
+        run: git checkout ${{ env.BRANCH }}
               
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1

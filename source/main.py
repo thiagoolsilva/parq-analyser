@@ -15,12 +15,12 @@ limitations under the License.
 """
 
 import logging
-import argparse
-import args_parse
-import parquet_core
-import dataframe_helper
+from source.args_parse import config_args_parse
+from source.dataframe_helper import load_dataframe
+from source.parquet_core import parse_parquet_file
 
 APP_VERSION = '01.00.00'
+
 
 def main():
     """
@@ -28,7 +28,7 @@ def main():
     """
 
     # start args parse module
-    args = args_parse.config_args_parse(APP_VERSION)
+    args = config_args_parse(APP_VERSION)
 
     # check if verbose mode need to be activated
     should_activate_verbose_mode(args.verbose)
@@ -36,10 +36,13 @@ def main():
     logging.debug(vars(args))
 
     # load dataframe
-    dataframe = dataframe_helper.load_dataframe(args.P)
+    dataframe = load_dataframe(args.P)
 
     # call parquet core
-    parquet_core.parse_parquet_file(dataframe, header=args.H, tail=args.T, total_dataframe_size=args.C, drop_rows=args.D)
+    parse_parquet_file(
+        dataframe, header=args.H, tail=args.T,
+        total_dataframe_size=args.C, drop_rows=args.D)
+
 
 def should_activate_verbose_mode(verbose_mode):
     """
@@ -52,4 +55,6 @@ def should_activate_verbose_mode(verbose_mode):
     if verbose_mode:
         logging.basicConfig(level=logging.DEBUG)
 
-main()
+
+if __name__ == '__main__':
+    main()

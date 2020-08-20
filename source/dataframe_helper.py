@@ -16,6 +16,7 @@ limitations under the License.
 
 import pandas as pd
 
+
 def load_dataframe(path):
     """
     Load the parquet file using provided path

@@ -26,12 +26,13 @@ class TestParquetValidateFunc(unittest.TestCase):
         dataframe_len = execute_total_dataframe_count_strategy(dataframe)
 
         self.assertEqual(5, dataframe_len)
-    
+
     def test_when_dataframe_has_len_equals_to_zero_is_expected_to_return_zero(self):
         dataframe = create_dataframe(0)
         dataframe_len = execute_total_dataframe_count_strategy(dataframe)
 
         self.assertEqual(0, dataframe_len)
+
 
 if __name__ == '__main__':
     unittest.main()

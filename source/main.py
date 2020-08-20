@@ -18,8 +18,7 @@ import logging
 from source.args_parse import config_args_parse
 from source.dataframe_helper import load_dataframe
 from source.parquet_core import parse_parquet_file
-
-APP_VERSION = '01.00.00'
+from source.version import __version__
 
 
 def main():
@@ -27,21 +26,25 @@ def main():
     Process parquet file data
     """
 
-    # start args parse module
-    args = config_args_parse(APP_VERSION)
+    try:
+        # start args parse module
+        args = config_args_parse(__version__)
 
-    # check if verbose mode need to be activated
-    should_activate_verbose_mode(args.verbose)
+        # check if verbose mode need to be activated
+        should_activate_verbose_mode(args.verbose)
 
-    logging.debug(vars(args))
+        logging.debug(vars(args))
 
-    # load dataframe
-    dataframe = load_dataframe(args.P)
+        # load dataframe
+        dataframe = load_dataframe(args.P)
 
-    # call parquet core
-    parse_parquet_file(
-        dataframe, header=args.H, tail=args.T,
-        total_dataframe_size=args.C, drop_rows=args.D)
+        # call parquet core
+        parse_parquet_file(
+            dataframe, header=args.H, tail=args.T,
+            total_dataframe_size=args.C, drop_rows=args.D)
+
+    except Exception as e:
+        logging.error(str(e))
 
 
 def should_activate_verbose_mode(verbose_mode):

@@ -53,7 +53,7 @@ setup(
     zip_safe=False,
     entry_points={
         "console_scripts": [
-            "parse_parquet = source.main:main",
+            "parq-analyser = source.main:main",
         ]
     },
     python_requires='>=3.2',

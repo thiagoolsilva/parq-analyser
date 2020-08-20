@@ -102,7 +102,7 @@ Ps: The maximum value accepted is 199
 ### Drop the first N rows:
 
 You can combine this command getting the first or last rows. In order to exemplify you can run the command 
-`parq-analyser -D 1 -P test.paquet -T 2` to drop the first row and get the next ones.
+`parq-analyser -D 1 -P test.paquet -T 2` to drop the first rows and get the next ones.
 
 
 ```

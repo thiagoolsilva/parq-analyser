@@ -1,7 +1,7 @@
 [![CI status](https://github.com/thiagoolsilva/parq-analyser/workflows/CI/badge.svg)](https://github.com/thiagoolsilva/parq-analyser/actions?queryworkflow%3ACI+event%3Apush+branch%3Amaster)
 [![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=true)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The project aims to help data science to analyser parquet files using the most commons functions provided by [pandas](https://pandas.pydata.org/) framework.
+The project aims to help data scientists to analyser parquet files using the most commons functions provided by [pandas](https://pandas.pydata.org/) framework.
 
 Below is the overview of the available functions:
 

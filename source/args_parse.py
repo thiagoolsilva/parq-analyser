@@ -66,7 +66,7 @@ def config_args_parse(version):
                         type=str,
                         nargs="+",
                         action="store",
-                        help=' List of selected columns to be returned',
+                        help=' List of selected columns to be returned separated by space',
                         required=False)
     parser.add_argument('-C',
                         help='Get total rows',

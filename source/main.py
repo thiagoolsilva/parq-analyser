@@ -42,7 +42,7 @@ def main():
         parse_parquet_file(
             dataframe, header=args.H, tail=args.T,
             total_dataframe_size=args.C, drop_rows=args.D,
-            selected_columns=args.CS)
+            selected_columns=args.SC)
 
     except Exception as e:
         logging.error(str(e))

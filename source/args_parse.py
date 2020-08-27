@@ -62,7 +62,7 @@ def config_args_parse(version):
                         choices=range(1, 200),
                         action='store',
                         help='the numbers of the first rows to be dropped. The maximum number accepted is 199')
-    parser.add_argument('-CS',
+    parser.add_argument('-SC',
                         type=str,
                         nargs="+",
                         action="store",

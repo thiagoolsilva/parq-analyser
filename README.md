@@ -8,18 +8,18 @@ Below is the overview of the available functions:
 ```
 $ parq-analyser -h
 
-usage: parq-analyser [-h] [-P --path] [-H --head] [-T --tail] [-D --drop] [-CS CS [CS ...]] [-C] [-verbose] [-v]
+usage: parq-analyser [-h] [-P --path] [-H --head] [-T --tail] [-D --drop] [-SC SC [SC ...]] [-C] [-verbose] [-v]
 
 Process parquet file data
 
 optional arguments:
   -h, --help       show this help message and exit
   -P --path        the path of parquet file
-  -H --head        the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 199 and this
-                   is the default operation selected by program if no one is provided.
+  -H --head        the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 199 and
+                   this is the default operation selected by program if no one is provided.
   -T --tail        the numbers of the last rows to be returned. The maximum number accepted is 199
   -D --drop        the numbers of the first rows to be dropped. The maximum number accepted is 199
-  -CS CS [CS ...]  List of selected columns to be returned separated by space
+  -SC SC [SC ...]  List of selected columns to be returned separated by space
   -C               Get total rows
   -verbose         enable verbose mode
   -v               shows the app version

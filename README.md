@@ -8,20 +8,21 @@ Below is the overview of the available functions:
 ```
 $ parq-analyser -h
 
-usage: parq-analyser [-h] [-P --path] [-H --head] [-T --tail] [-D --drop] [-C] [-verbose] [-v]
+usage: parq-analyser [-h] [-P --path] [-H --head] [-T --tail] [-D --drop] [-SC SC [SC ...]] [-C] [-verbose] [-v]
 
 Process parquet file data
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -P --path   the path of parquet file
-  -H --head   the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 199 and this is the default operation selected by program if
-              no one is provided.
-  -T --tail   the numbers of the last rows to be returned. The maximum number accepted is 199
-  -D --drop   the numbers of the first rows to be dropped. The maximum number accepted is 199
-  -C          Get total rows
-  -verbose    enable verbose mode
-  -v          shows the app version
+  -h, --help       show this help message and exit
+  -P --path        the path of parquet file
+  -H --head        the numbers of the first rows to be returned. The default value is 5 and the maximum accepted is 199 and
+                   this is the default operation selected by program if no one is provided.
+  -T --tail        the numbers of the last rows to be returned. The maximum number accepted is 199
+  -D --drop        the numbers of the first rows to be dropped. The maximum number accepted is 199
+  -SC SC [SC ...]  List of selected columns to be returned separated by space
+  -C               Get total rows
+  -verbose         enable verbose mode
+  -v               shows the app version
 
 Enjoy the program!
 ```
@@ -66,7 +67,7 @@ After install it you can type  `parq-analyser -h` to get all information about t
 
 ### Reading the first N rows:
 
-Type the command `parq-analyser -P yourParquetFile.parquet -H 3` to get the first N rows of parquet.
+Type the command `parq-analyser -P test.paquet -H 3` to get the first N rows of parquet.
 
 ```
 +----+---------+--------+
@@ -82,7 +83,7 @@ Ps: The maximum value accepted is 199
 
 ### Reading the last N rows:
 
-Type the command `parq-analyser -P yourParquetFile.parquet -P 1` to get the last N rows of parquet.
+Type the command `parq-analyser -P test.paquet -P 1` to get the last N rows of parquet.
 
 ```
 +----+---------+--------+
@@ -112,10 +113,26 @@ Ps: The maximum value accepted is 199
 
 ### Gets the size of Paquet:
 
-Type the command `parq-analyser -P yourParquetFile.parquet -C` to get the total rows of parquet file.
+Type the command `parq-analyser -P test.paquet -C` to get the total rows of parquet file.
 
 ```
 Total Rows: 2
+```
+
+### Select columns of Paquet:
+
+Type the command `parq-analyser -P test.paquet -SC Names` to get the selected rows of parquet file.
+
+Ps: You can mix this command with another ones.
+
+```
++----+---------+
+|    | Names   |
+|----+---------|
+|  0 | Thiago  |
+|  1 | Lopes   |
+|  2 | Silva   |
++----+---------+
 ```
 
 # Features

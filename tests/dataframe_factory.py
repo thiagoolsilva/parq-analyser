@@ -29,7 +29,7 @@ def create_dataframe(rows):
         pandas.Dataframe: Dataframe
     """
 
-    data = [[x] for x in range(0, rows)]
-    dataframe = pd.DataFrame(data, columns=['Number'])
+    data = [[x, "Lopes"] for x in range(0, rows)]
+    dataframe = pd.DataFrame(data, columns=['Number', "Names"])
 
     return dataframe

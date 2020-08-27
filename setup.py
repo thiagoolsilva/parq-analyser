@@ -39,7 +39,7 @@ except Exception:
 
 # execute setuptools script
 setup(
-    name='parse parquet',
+    name='parq analyser',
     license='https://github.com/thiagoolsilva/parquet_reader/blob/master/LICENSE',
     author='Thiago Lopes da Silva <thiagoolsilva@gmail.com',
     version=__version__,

@@ -121,7 +121,7 @@ Total Rows: 2
 
 ### Select columns of Paquet:
 
-Type the command `parq-analyser -P test.paquet -CS Names` to get the selected rows of parquet file.
+Type the command `parq-analyser -P test.paquet -SC Names` to get the selected rows of parquet file.
 
 Ps: You can mix this command with another ones.
 

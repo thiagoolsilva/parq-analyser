@@ -42,26 +42,66 @@ def parse_parquet_file(dataframe, **kwargs):
     arg_tail_count = kwargs["tail"]
     args_total_dataframe_count = kwargs["total_dataframe_size"]
     args_drop_count = kwargs["drop_rows"]
+    selected_list_columns = kwargs["selected_columns"]
 
-    filtered_dataframe = None
-    total_count_dataframe = None
+    if not is_empty_dataframe(dataframe):
+        filtered_dataframe = None
+        total_count_dataframe = None
 
-    if args_drop_count:
-        execute_drop_strategy(dataframe, args_drop_count)
+        if args_drop_count:
+            execute_drop_strategy(dataframe, args_drop_count)
 
-    if args_total_dataframe_count:
-        total_count_dataframe = execute_total_dataframe_count_strategy(
-            dataframe)
-    elif arg_tail_count:
-        filtered_dataframe = execute_tail_strategy(dataframe, arg_tail_count)
+        if selected_list_columns:
+            dataframe = execute_select_dataframe_columns(
+                dataframe, selected_list_columns)
+
+        if args_total_dataframe_count:
+            total_count_dataframe = execute_total_dataframe_count_strategy(
+                dataframe)
+        elif arg_tail_count:
+            filtered_dataframe = execute_tail_strategy(
+                dataframe, arg_tail_count)
+        else:
+            filtered_dataframe = execute_header_strategy(
+                dataframe, arg_header_count)
+
+        # print out the result set
+        if filtered_dataframe is not None:
+            print_dataframe_content(filtered_dataframe)
+        else:
+            print("Total Rows:", total_count_dataframe)
     else:
-        filtered_dataframe = execute_header_strategy(
-            dataframe, arg_header_count)
+        print("It was provided a empty dataframe.")
 
-    if filtered_dataframe is not None:
-        print_dataframe_content(filtered_dataframe)
+
+def execute_select_dataframe_columns(dataframe, select_dataframe_columns):
+    """
+
+    Filter dataframe using the provided columns
+
+    Args:
+        dataframe (array[str]): Array of columns names
+        select_dataframe_columns (pandas.Dataframe): Dataframe
+
+    Returns:
+        pandas.Dataframe: Dataframe filtered
+    """
+
+    logging.debug(
+        '>>>>>>>>> Using select dataframe columns strategy <<<<<<<<<<<<')
+
+    dataframe_columns = list(dataframe.columns)
+    diff_selected_columns = list(
+        set(select_dataframe_columns) - set(dataframe_columns))
+
+    if len(diff_selected_columns) == 0:
+        filtered_dataframe_columns = dataframe if len(
+            select_dataframe_columns) == 0 else dataframe[select_dataframe_columns]
     else:
-        print("Total Rows:", total_count_dataframe)
+        raise ValueError('The provided columns [%s] does not exists.' % ', '.join(
+            diff_selected_columns))
+
+    return filtered_dataframe_columns
 
 
 def execute_total_dataframe_count_strategy(dataframe):
@@ -157,6 +197,20 @@ def validate_required_fields(dataframe):
 
     if dataframe is None:
         raise ValueError("It was not provided a valid Dataframe.")
+
+
+def is_empty_dataframe(dataframe):
+    """
+    Checks if the provided dataframe is empty
+
+    Args:
+        dataframe (pandas.Dataframe: Dataframe
+
+    Returns:
+        Bool: False if the dataframe is not empty
+    """
+
+    return dataframe is not None and dataframe.empty
 
 
 def print_dataframe_content(dataframe):

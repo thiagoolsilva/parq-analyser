@@ -62,6 +62,12 @@ def config_args_parse(version):
                         choices=range(1, 200),
                         action='store',
                         help='the numbers of the first rows to be dropped. The maximum number accepted is 199')
+    parser.add_argument('-SC',
+                        type=str,
+                        nargs="+",
+                        action="store",
+                        help=' List of selected columns to be returned separated by space',
+                        required=False)
     parser.add_argument('-C',
                         help='Get total rows',
                         action='store_true')

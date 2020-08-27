@@ -25,7 +25,7 @@ PARENT_DIRECTORY="${DIR%/*}"
 cd ${PARENT_DIRECTORY}
 
 # generate whl and dist code for python 3.X
-python setup.py sdist bdist_wheel --universal
+python setup.py sdist bdist_wheel
 
 echo '-------------'
 echo 'Check dist folder to get build output.'
